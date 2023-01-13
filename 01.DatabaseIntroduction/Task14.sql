@@ -1,0 +1,109 @@
+CREATE DATABASE CarRental;
+GO
+USE CarRental;
+
+CREATE TABLE Categories
+(
+Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+CategoryName NVARCHAR(20) NOT NULL,
+DailyRate TINYINT,
+WeeklyRate TINYINT,
+MonthlyRate TINYINT,
+WeekendRate TINYINT
+)
+
+INSERT INTO Categories
+VALUES
+('sedan',2,3,4,5),
+('truck',6,4,10,5),
+('cabrio',4,3,9,9)
+
+SELECT * FROM Categories
+
+CREATE TABLE Cars
+(
+Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+PlateNumber NCHAR(6) UNIQUE NOT NULL,
+Manufacturer NVARCHAR(20) NOT NULL,
+Model NVARCHAR(50)NOT NULL,
+CarYear SMALLINT NOT NULL,
+CategoryId INT NOT NULL,
+Doors TINYINT NOT NULL,
+Picture VARBINARY(MAX),
+Condition NVARCHAR(20),
+Available BIT NOT NULL,
+FOREIGN KEY (CategoryId) REFERENCES Categories(Id)
+)
+
+INSERT INTO Cars 
+VALUES
+('ÑÒ1222','Mercedes-Benz','S63AMG',2018,1,4,NULL,'Good',1),
+('ÑÂ3333','Audi','RS8',2022,2,2,NULL,'Good',1),
+('ÑÀ1222','BMW','F10',2013,4,4,NULL,'Excellent',0)
+
+SELECT * FROM Cars
+
+CREATE TABLE Employees
+(
+Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+FirstName NVARCHAR(20) NOT NULL,
+LastName NVARCHAR(20) NOT NULL,
+Title NVARCHAR(10),
+Notes NVARCHAR(MAX)
+)
+
+INSERT INTO Employees
+VALUES
+('Ivan','Petrov','employee',NULL),
+('Petar','Ivanov','employee',NULL),
+('Stoyan','SToyanov','employee',NULL)
+
+SELECT * FROM Employees
+
+CREATE TABLE Customers
+(
+Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+DriverLicenceNumber NCHAR(6) NOT NULL,
+FullName NVARCHAR(40) NOT NULL,
+[Address] NVARCHAR(50) NOT NULL,
+City NVARCHAR(20) NOT NULL,
+ZipCode SMALLINT NOT NULL,
+Notes NVARCHAR(MAX)
+)
+
+INSERT INTO Customers
+VALUES
+('CA4444','Ivan Stoyanov','Address1','Sofia',7000,NULL),
+('CA5643','Zahari Baharov','Address2','Pleven',8000,NULL),
+('CB9900','Sonya Ivanova','Address3','Stara Zagora',6000,NULL)
+
+SELECT * FROM Customers
+
+CREATE TABLE RentalOrders
+(
+Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+EmployeeId INT NOT NULL,
+CustomerId INT NOT NULL,
+CarId INT NOT NULL,
+TankLevel TINYINT NOT NULL,
+KilometrageStart INT NOT NULL,
+KilometrageEnd INT NOT NULL,
+StartDate DATE NOT NULL,
+EndDate DATE NOT NULL,
+TotalDays SMALLINT NOT NULL,
+RateApplied TINYINT,
+TaxRate SMALLINT,
+OrdeerStatus BIT NOT NULL,
+Notes NVARCHAR(MAX),
+FOREIGN KEY (EmployeeId) REFERENCES Employees(Id),
+FOREIGN KEY (CustomerId) REFERENCES Customers(Id),
+FOREIGN KEY (CarId) REFERENCES Cars(Id),
+)
+
+INSERT INTO RentalOrders
+VALUES
+(1,1,1,10,2000,2070,'11-11-2012','12-11-2012',30,NULL,NULL,0,NULL),
+(2,2,2,50,1000,2090,'11-13-2012','11-26-2012',89,NULL,NULL,0,NULL),
+(3,3,3,100,2500,2900,'08-08-2012','09-09-2012',31,NULL,NULL,0,NULL)
+
+SELECT * FROM RentalOrders
