@@ -1,0 +1,24 @@
+CREATE DATABASE Orders;
+GO
+USE Orders;
+
+CREATE TABLE Orders
+(
+Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+ProductName VARCHAR(20) NOT NULL,
+OrderDate DATETIME NULL
+)
+
+INSERT INTO Orders VALUES
+('Butter','2016-09-19 00:00:00.000'),
+('Milk','2016-09-30 00:00:00.000'),
+('Cheese','2016-09-04 00:00:00.000'),
+('Bread','2015-12-20 00:00:00.000'),
+('Tomatoes','2015-12-30 00:00:00.000')
+
+SELECT * FROM Orders
+
+SELECT * 
+,DATEADD(DAY, 3, OrderDate ) AS [Pay Due]
+,DATEADD(MONTH, 1, OrderDate) AS [Deliver Due]
+FROM Orders
